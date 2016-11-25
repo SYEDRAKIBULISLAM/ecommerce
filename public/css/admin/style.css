@@ -1,0 +1,29 @@
+/*Custom design class*/
+.no-margin {
+    margin:0px !important;
+}
+.no-left-padding {
+    padding-left: 0px !important;
+}
+.margin-top-2px {
+    margin: 0px;
+    margin-top: 2px;
+}
+/*
+ *************************************
+ *Custom Materilize
+ *******************************
+*/
+nav i, nav [class^="mdi-"], nav [class*="mdi-"], nav i.material-icons {
+    height: inherit !important;
+}
+
+/*
+ *************************************
+ *Navbar
+ *******************************
+*/
+
+.tob-bg-nav ul li{
+    border-left:1px solid #b3b3b3;
+}

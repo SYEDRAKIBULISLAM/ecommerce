@@ -1,0 +1,14 @@
+/* Start Top Header*/
+
+.top-nav {
+    background-color: inherit !important;
+    border: none !important;
+    box-shadow: none !important;
+    height: 30px !important;
+    line-height: 30px !important;
+    overflow: hidden;
+}
+.top-nav a{
+    color: #000000;
+}
+/* End Top Header */
