@@ -1,0 +1,28 @@
+{
+    "require": {
+        "illuminate/database": "^5.3",
+        "illuminate/validation": "^5.3",
+        "illuminate/http": "^5.3",
+        "symfony/http-kernel": "^3.1",
+        "symfony/browser-kit": "^3.1",
+        "symfony/class-loader": "^3.1",
+        "symfony/config": "^3.1",
+        "symfony/console": "^3.1",
+        "symfony/dependency-injection": "^3.1",
+        "symfony/var-dumper": "^3.1",
+        "illuminate/console": "^5.3",
+        "illuminate/contracts": "^5.3",
+        "illuminate/container": "^5.3",
+        "illuminate/support": "^5.3",
+        "symfony/http-foundation": "^3.1",
+        "illuminate/session": "^5.3",
+        "siriusphp/validation": "^2.1",
+        "siriusphp/upload": "^2.1",
+        "aura/session": "^2.1"
+    },
+    "autoload": {
+        "classmap": [
+            "app/models"
+        ]
+    }
+}
