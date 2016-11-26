@@ -23,11 +23,8 @@ class MyProfile extends AdminController
          * Session Factory
          * ************************
          */
-        $session_factory = new SessionFactory;
-        $session = $session_factory->newInstance($_COOKIE);
+        $message = $this->getSessionMessage('admin/users/myprofile/index');
 
-        $segment = $session->getSegment('admin/users/myprofile/index');
-        $message = $segment->getFlash('message', 'Not Set');
 
         $user = UserModel::find($_SESSION['userid']);
         if (isset($user->userProfile->image))
@@ -40,8 +37,11 @@ class MyProfile extends AdminController
             $imgPath = '/public/images/users/avatar.jpg';
         }
 
-        $segment = $session->getSegment('admin/users/myprofile/index');
-
+        /*
+         * ************************
+         * View
+         * ************************
+         */
         $this->view('admin/users/myprofile/index', ['message' => $message, 'user' => $user, 'imgPath' => $imgPath]);
     }
     public function edit_image()
@@ -51,13 +51,13 @@ class MyProfile extends AdminController
          * Session Factory
          * ************************
          */
-        $session_factory = new SessionFactory;
-        $session = $session_factory->newInstance($_COOKIE);
+        $message = $this->getSessionMessage('admin/users/myprofile/edit_image');
 
-
-        $segment = $session->getSegment('admin/users/myprofile/edit_image');
-        $message = $segment->getFlash('message', 'Not Set');
-
+        /*
+         * ************************
+         * View
+         * ************************
+         */
         $this->view('admin/users/myprofile/edit_image', ['message' => $message]);
     }
     public function store_image()
@@ -67,15 +67,6 @@ class MyProfile extends AdminController
 
         if (isset($_FILES['image']))
         {
-
-            /*
-             * ************************
-             * Session Factory
-             * ************************
-             */
-            $session_factory = new SessionFactory;
-            $session = $session_factory->newInstance($_COOKIE);
-
             /*
              * Carbon DateTimestamp
              */
@@ -133,12 +124,11 @@ class MyProfile extends AdminController
                                  * Flash Session
                                  * *****************************
                                  */
-                                $segment = $session->getSegment('admin/users/myprofile/index');
                                 $sessionMessage = [
                                     'type' => 'success',
                                     'title' => 'Success',
-                                    'message' => '​Update my profile picture'];
-                                $segment->setFlash('message', $sessionMessage);
+                                    'message' => 'Profile picture updated!!'];
+                                $this->setSessionMessage('admin/users/myprofile/index', $sessionMessage);
 
                                 /*
                                  * ******************************
@@ -155,12 +145,11 @@ class MyProfile extends AdminController
                                  * Flash Session
                                  * *****************************
                                  */
-                                $segment = $session->getSegment('admin/users/myprofile/edit_image');
                                 $sessionMessage = [
                                     'type' => 'danger',
                                     'title' => 'Error',
                                     'message' => 'Something missing!! Please try again....'];
-                                $segment->setFlash('message', $sessionMessage);
+                                $this->setSessionMessage('admin/users/myprofile/edit_image', $sessionMessage);
 
                                 /*
                                  * ******************************
@@ -178,12 +167,12 @@ class MyProfile extends AdminController
                              * Flash Session
                              * *****************************
                              */
-                            $segment = $session->getSegment('admin/users/myprofile/edit_image');
+
                             $sessionMessage = [
                                 'type' => 'danger',
                                 'title' => 'Error',
                                 'message' => 'Old image directory missing.'];
-                            $segment->setFlash('message', $sessionMessage);
+                            $this->setSessionMessage('admin/users/myprofile/edit_image', $sessionMessage);
 
                             /*
                              * ******************************
@@ -208,12 +197,11 @@ class MyProfile extends AdminController
                      * Flash Session
                      * *****************************
                      */
-                    $segment = $session->getSegment('admin/users/myprofile/edit_image');
                     $sessionMessage = [
                         'type' => 'danger',
                         'title' => 'Error',
                         'message' => $result->getMessages()[0]->template];
-                    $segment->setFlash('message', $sessionMessage);
+                    $this->setSessionMessage('admin/users/myprofile/edit_image', $sessionMessage);
 
                     /*
                      * ******************************
@@ -241,7 +229,16 @@ class MyProfile extends AdminController
                             {
                                 $result->confirm(); // this will remove the .lock file
 
-
+                                /*
+                                 * ******************************
+                                 * Flash Session
+                                 * *****************************
+                                 */
+                                $sessionMessage = [
+                                    'type' => 'success',
+                                    'title' => 'Success',
+                                    'message' => 'Profile picture added!!'];
+                                $this->setSessionMessage('admin/users/myprofile/index', $sessionMessage);
                                 /*
                                  * ******************************
                                  * Redirect URL
@@ -261,6 +258,23 @@ class MyProfile extends AdminController
                             if (isset($setImage))
                             {
                                 $result->confirm(); // this will remove the .lock file
+
+                                /*
+                                 * ******************************
+                                 * Flash Session
+                                 * *****************************
+                                 */
+                                $sessionMessage = [
+                                    'type' => 'success',
+                                    'title' => 'Success',
+                                    'message' => 'Profile picture added!!'];
+                                $this->setSessionMessage('admin/users/myprofile/index', $sessionMessage);
+
+                                /*
+                                 * ******************************
+                                 * Redirect URL
+                                 * *****************************
+                                 */
                                 $urlPath = root() . '/admin/users/myprofile/';
                                 redirect($urlPath);
                             }
@@ -281,12 +295,11 @@ class MyProfile extends AdminController
                      * Flash Session
                      * *****************************
                      */
-                    $segment = $session->getSegment('admin/users/myprofile/edit_image');
                     $sessionMessage = [
                         'type' => 'danger',
                         'title' => 'Error',
                         'message' => $result->getMessages()[0]->template];
-                    $segment->setFlash('message', $sessionMessage);
+                    $this->setSessionMessage('admin/users/myprofile/edit_image', $sessionMessage);
 
                     /*
                      * ******************************
@@ -313,6 +326,9 @@ class MyProfile extends AdminController
 
     }
 
+
+
+
     private function ImageDir($dateTime)
     {
         $dateTime = Carbon::parse($dateTime);
@@ -321,11 +337,7 @@ class MyProfile extends AdminController
         $thisDay = $dateTime->day;
         return ($thisYear . '/' . $thisMonth . '/' . $thisDay);
     }
-    private function setSessionMessage()
-    {
-
-    }
-    private function getSessionMessage()
+    private function setSessionMessage($next, $message)
     {
         /*
          * ************************
@@ -334,6 +346,22 @@ class MyProfile extends AdminController
          */
         $session_factory = new SessionFactory;
         $session = $session_factory->newInstance($_COOKIE);
-    }
 
+        $segment = $session->getSegment($next);
+        $segment->setFlash('message', $message);
+    }
+    private function getSessionMessage($path)
+    {
+        /*
+         * ************************
+         * Session Factory
+         * ************************
+         */
+        $session_factory = new SessionFactory;
+        $session = $session_factory->newInstance($_COOKIE);
+
+        $segment = $session->getSegment($path);
+        $message = $segment->getFlash('message', 'Not Set');
+        return $message;
+    }
 }

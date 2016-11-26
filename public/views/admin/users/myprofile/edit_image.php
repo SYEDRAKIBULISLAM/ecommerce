@@ -23,7 +23,7 @@
 
         <!-- PAGE TITLE -->
         <div class="page-title">
-            <h2><button onclick="window.history.back();"><span class="fa fa-arrow-circle-o-left"></span></button> Edit Image</h2>
+            <h2><button onclick="window.history.back();"><span class="fa fa-arrow-circle-o-left"></span></button> Image Edit</h2>
         </div>
         <!-- END PAGE TITLE -->
 
