@@ -12,6 +12,9 @@
 use Carbon\Carbon;
 use Sirius\Upload\Handler as UploadHandler;
 use Aura\Session\SessionFactory;
+use Sirius\Validation\RuleFactory;
+use Sirius\Validation\ErrorMessage;
+use Sirius\Validation\Validator;
 
 class MyProfile extends AdminController
 {
@@ -319,11 +322,169 @@ class MyProfile extends AdminController
     }
     public function edit_profile()
     {
-        $this->view('admin/users/myprofile/edit_profile', []);
+        $user = UserModel::find($_SESSION['userid']);
+        $this->view('admin/users/myprofile/edit_profile', ['user' => $user]);
     }
     public function store_profile()
     {
+        include_once ('functions/RootURL.php');
+        include_once ('functions/RedirectURL.php');
 
+        if (isset($_POST['submit']))
+        {
+            $name = $_POST['name'];
+            $birth = $_POST['birth'];
+            $gender = '';
+            if(isset($_POST['gender']))
+            {
+                $gender = $_POST['gender'];
+            }
+            $email = $_POST['email'];
+            $address = $_POST['address'];
+            $contact = $_POST['contact'];
+            $profession = $_POST['profession'];
+            $company = $_POST['company'];
+            $designation = $_POST['designation'];
+            $about = $_POST['about'];
+            $website = $_POST['website'];
+            $facebook = $_POST['facebook'];
+            $twitter = $_POST['twitter'];
+            $googleplus = $_POST['googleplus'];
+            $linkedin = $_POST['linkedin'];
+            $github = $_POST['github'];
+
+            $ruleFactory = new RuleFactory;
+            $errorMessagePrototype = new ErrorMessage;
+            $validator = new Validator($ruleFactory, $errorMessagePrototype);
+            $validator->add(array(
+                'name:Name' => 'required | minlength(min=4) | maxlength(100)({label} must have less than {max} characters)',
+                'birth:Birth Date' => 'Date',
+                'email:Email' => 'required | Email',
+                'address:Address' => 'minlength(min=10) | maxlength(255)',
+                'contact:Contact' => 'minlength(min=5) | maxlength(50)',
+                'profession:Profession' => 'minlength(min=5) | maxlength(50)',
+                'company:Company' => 'minlength(min=5) | maxlength(100)',
+                'designation:Designation' => 'minlength(min=5) | maxlength(50)',
+                'about:About me' => 'minlength(min=10) | maxlength(255)',
+                'website:Website' => 'website | maxlength(255)',
+                'facebook:Facebook' => 'website | maxlength(255)',
+                'twitter:Twitter' => 'website | maxlength(255)',
+                'googleplus:Googleplus' => 'website | maxlength(255)',
+                'linkedin:Linkedin' => 'website | maxlength(255)',
+                'github:Github' => 'website | maxlength(255)'
+            ));
+
+            if ($validator->validate($_POST))
+            {
+                $userProfile = UserProfileModel::find($_SESSION['userid']);
+                if(isset($userProfile->id))
+                {
+                    $userProfile->user->update(array(
+                        'name' => $name,
+                        'email' => $email,
+                        'contact' => $contact
+                    ));
+                    $updateProfile = $userProfile->update(array(
+                        'birth_date' => $birth,
+                        'gender' => $gender,
+                        'address' => $address,
+                        'profession' => $profession,
+                        'company_name' => $company,
+                        'designation' => $designation,
+                        'website' => $website,
+                        'about' => $about,
+                        'fb' => $facebook,
+                        'tw' => $twitter,
+                        'gplus' => $googleplus,
+                        'ln' => $linkedin,
+                        'git' => $github,
+                        'user_id' => $_SESSION['userid']
+                    ));
+                    if(isset($updateProfile))
+                    {
+                        /*
+                         * ******************************
+                         * Flash Session
+                         * *****************************
+                         */
+                        $sessionMessage = [
+                            'type' => 'success',
+                            'title' => 'Success',
+                            'message' => 'Profile picture updated!!'];
+                        $this->setSessionMessage('admin/users/myprofile/index', $sessionMessage);
+                        /*
+                         * ******************************
+                         * Redirect URL
+                         * *****************************
+                         */
+                        $urlPath = root() . '/admin/users/myprofile/';
+                        redirect($urlPath);
+                    }
+                    else
+                    {
+                        echo 'error';
+                    }
+                }
+                else
+                {
+                    $user = UserModel::find($_SESSION['userid']);
+                    $user->update(array(
+                        'name' => $name,
+                        'email' => $email,
+                        'contact' => $contact
+                    ));
+                    $storeProfile = UserProfileModel::create([
+                        'id' => $_SESSION['userid'],
+                        'birth_date' => $birth,
+                        'gender' => $gender,
+                        'address' => $address,
+                        'profession' => $profession,
+                        'company_name' => $company,
+                        'designation' => $designation,
+                        'website' => $website,
+                        'about' => $about,
+                        'fb' => $facebook,
+                        'tw' => $twitter,
+                        'gplus' => $googleplus,
+                        'ln' => $linkedin,
+                        'git' => $github,
+                        'user_id' => $_SESSION['userid']
+                    ]);
+                    if(isset($storeProfile->id))
+                    {
+                        /*
+                         * ******************************
+                         * Flash Session
+                         * *****************************
+                         */
+                        $sessionMessage = [
+                            'type' => 'success',
+                            'title' => 'Success',
+                            'message' => 'Profile picture updated!!'];
+                        $this->setSessionMessage('admin/users/myprofile/index', $sessionMessage);
+                        /*
+                         * ******************************
+                         * Redirect URL
+                         * *****************************
+                         */
+                        $urlPath = root() . '/admin/users/myprofile/';
+                        redirect($urlPath);
+                    }
+                    else
+                    {
+                        echo 'error';
+                    }
+                }
+
+
+            }
+
+//            echo validate;
+        }
+        else
+        {
+            $this->view('admin/errors/404');
+        }
     }
 
 

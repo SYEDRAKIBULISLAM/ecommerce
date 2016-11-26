@@ -15,7 +15,7 @@
   
 CREATE TABLE IF NOT EXISTS `userprofile`(
     `id` INT PRIMARY KEY ,
-    `birth_date` TIMESTAMP NULL,
+    `birth_date` DATE NULL,
     `gender` VARCHAR(10) NULL,
     `address` VARCHAR(255) NULL,
     `profession` VARCHAR(100) NULL,

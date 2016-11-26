@@ -36,7 +36,7 @@ class App
         $this->controller = new $this->controller;
         if(isset($parseNewUrl[0]))
         {
-            if(method_exists($this->controller, $parseNewUrl[0]))
+            if((method_exists($this->controller, $parseNewUrl[0])) && (is_callable(array($this->controller, $parseNewUrl[0]))))
             {
                 $this->method = $parseNewUrl[0];
                 unset($parseNewUrl[0]);

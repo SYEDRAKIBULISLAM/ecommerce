@@ -60,72 +60,84 @@
                                     <tbody>
                                     <tr>
                                         <th>Username</th>
-                                        <td>John Doe</td>
+                                        <td><?=$data['user']->username?></td>
                                     </tr>
                                     <tr>
                                         <th>Name</th>
-                                        <td>John Doe</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Birthday</th>
-                                        <td>John Doe</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Gender</th>
-                                        <td>John Doe</td>
+                                        <td><?=$data['user']->name?></td>
                                     </tr>
                                     <tr>
                                         <th>Email</th>
-                                        <td>John Doe</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Address</th>
-                                        <td>John Doe</td>
+                                        <td><?=$data['user']->email?></td>
                                     </tr>
                                     <tr>
                                         <th>Contact</th>
-                                        <td>John Doe</td>
+                                        <td><?=$data['user']->contact?></td>
+                                    </tr>
+                                    <?php if(isset($data['user']->userProfile->id)):?>
+                                    <tr>
+                                        <th>Birthday</th>
+                                        <td><?php if($data['user']->userProfile->birth_date != '0000-00-00'){echo $data['user']->userProfile->birth_date;}?></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Gender</th>
+                                        <td><?=$data['user']->userProfile->gender?></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Address</th>
+                                        <td><?=$data['user']->userProfile->address?></td>
                                     </tr>
                                     <tr>
                                         <th>Profession</th>
-                                        <td>John Doe</td>
+                                        <td><?=$data['user']->userProfile->profession?></td>
                                     </tr>
                                     <tr>
                                         <th>Company Name</th>
-                                        <td>John Doe</td>
+                                        <td><?=$data['user']->userProfile->company_name?></td>
                                     </tr>
                                     <tr>
                                         <th>Designation</th>
-                                        <td>John Doe</td>
+                                        <td><?=$data['user']->userProfile->designation?></td>
                                     </tr>
                                     <tr>
                                         <th>About Me</th>
-                                        <td>John Doe</td>
+                                        <td><?=$data['user']->userProfile->about?></td>
                                     </tr>
                                     <tr>
                                         <th>Website</th>
-                                        <td>John Doe</td>
+                                        <td><a href="<?=$data['user']->userProfile->website?>" target="_blank"><?=$data['user']->userProfile->website?></a></td>
                                     </tr>
                                     <tr>
                                         <th>Social Links</th>
                                         <td>
-                                            <a class="btn btn-block btn-social btn-facebook">
+                                            <?php if($data['user']->userProfile->fb != ''):?>
+                                            <a class="btn btn-block btn-social btn-facebook" href="<?=$data['user']->userProfile->fb?>" target="_blank">
                                                 <i class="fa fa-facebook"></i> Facebook
                                             </a>
-                                            <a class="btn btn-block btn-social btn-twitter">
+                                            <?php endif; ?>
+                                            <?php if($data['user']->userProfile->tw != ''):?>
+                                            <a class="btn btn-block btn-social btn-twitter" href="<?=$data['user']->userProfile->tw?>" target="_blank">
                                                 <i class="fa fa-twitter"></i> Twitter
                                             </a>
-                                            <a class="btn btn-block btn-social btn-google-plus">
+                                            <?php endif; ?>
+                                            <?php if($data['user']->userProfile->gplus != ''):?>
+                                            <a class="btn btn-block btn-social btn-google-plus" href="<?=$data['user']->userProfile->gplus?>" target="_blank">
                                                 <i class="fa fa-google-plus"></i> Google Plus
                                             </a>
-                                            <a class="btn btn-block btn-social btn-linkedin">
+                                            <?php endif; ?>
+                                            <?php if($data['user']->userProfile->ln != ''):?>
+                                            <a class="btn btn-block btn-social btn-linkedin" href="<?=$data['user']->userProfile->ln?>" target="_blank">
                                                 <i class="fa fa-linkedin"></i> LinkedIn
                                             </a>
-                                            <a class="btn btn-block btn-social btn-github">
+                                            <?php endif; ?>
+                                            <?php if($data['user']->userProfile->git != ''):?>
+                                            <a class="btn btn-block btn-social btn-github" href="<?=$data['user']->userProfile->git?>" target="_blank">
                                                 <i class="fa fa-github"></i> GitHub
                                             </a>
+                                            <?php endif; ?>
                                         </td>
                                     </tr>
+                                    <?php endif; ?>
                                     </tbody>
                                 </table>
                             </div>
